@@ -1,0 +1,4 @@
+numpy~=1.19.0
+Django~=3.1a1
+djangorestframework~=3.11.0
+watchdog~=0.10.3
