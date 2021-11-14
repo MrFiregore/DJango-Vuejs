@@ -1,8 +1,14 @@
-# frontend
+# VUE - frontend
 
 ## Project setup
+1. [Install vue-cli](https://cli.vuejs.org/guide/installation.html)
+2. Run the following command to install all dependencies:
 ```
 npm install
+```
+3. Build dist:
+```
+npm build
 ```
 
 ### Compiles and hot-reloads for development

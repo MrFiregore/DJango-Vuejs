@@ -1,0 +1,51 @@
+$theme-colors: (
+  "primary": black,
+  "danger": blue
+);
+body {
+  min-height: 75rem;
+  padding-top: 4.5rem;
+}
+
+$enable-grid-classes:false;
+$primary:#2f3c48;
+$secondary:#6f7f8c;
+$success:#3e4d59;
+$danger:#cc330d;
+$info:#5c8f94;
+$warning:#6e9fa5;
+$light:#eceeec;
+$lesslight: #a1a0a0;
+$dark:#1e2b37;
+$enable-gradients:true;
+$spacer:1.2rem;
+$border-width:0;
+$btn-border-radius:.25rem;
+
+@import '../../../node_modules/bootstrap/scss/bootstrap';
+@import '../../../node_modules/bootstrap-vue/src/index';
+@import "background-variant";
+@import "background";
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+.square {
+  width: 50%;
+  float: left;
+}
+
+.square:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.asteroid{
+  max-width: 250px;
+}

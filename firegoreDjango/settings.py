@@ -28,6 +28,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -66,7 +68,7 @@ STATIC_URL = '/static/'
 FRONTEND_DIR = os.path.join(BASE_DIR, 'frontend')
 
 STATICFILES_DIRS = [
-    os.path.join(FRONTEND_DIR, 'dist/static')
+    os.path.join(FRONTEND_DIR, 'dist')
 ]
 
 TEMPLATES = [

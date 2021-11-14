@@ -10,14 +10,13 @@ module.exports = {
     configureWebpack: {
         resolve: {
             alias: {
-                '@': require('path').resolve(__dirname, 'src'), // change this to your folder path
+                '@': require('path').resolve(__dirname, 'src'),
                 vue$: 'vue/dist/vue.esm.js'
             },
-            extensions: ['.js', '.vue', '.json', '.scss']
+            extensions: ['.js', '.vue', '.json', '.scss', '.html']
         }
     },
     runtimeCompiler: true,
     outputDir: './dist/',
     assetsDir: 'static'
-
 }
