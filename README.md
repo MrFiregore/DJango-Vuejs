@@ -16,6 +16,7 @@ It will parse the csv, store all of them into the database and then move it to "
 ##Setup
 1. Create the database :
 ```shell
+python manage.py makemigrations asteroid  
 python manage.py migrate  
 ```
 2. Build vue application (read the [README.md](frontend/README.md) for more information)

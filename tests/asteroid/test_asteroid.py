@@ -1,6 +1,5 @@
 import pytest
-from django.test import TestCase, Client
-from apps.asteroid.models import Asteroid
+from apps.asteroid import Asteroid
 # from tests.factories import UsuarioAdminFactory, UsuarioComunFactory
 
 

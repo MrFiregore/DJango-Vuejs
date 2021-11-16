@@ -1,4 +1,5 @@
 import csv
+import glob
 import os
 import time
 import threading
@@ -19,6 +20,10 @@ class Utils:
         self.watcher_thread = threading.Thread(target=self.run_daemon, daemon=True)
 
     def run(self):
+        for file in glob.glob(
+                os.path.join(self.__src_path, '*.csv')):
+            self.run_sightings(file)
+
         try:
             self.watcher_thread.start()
         except (KeyboardInterrupt, OSError):
@@ -88,9 +93,10 @@ class Utils:
 
     def run_sightings(self, file):
         """
+        Process a sighting csv file and store into DB
 
         Args:
-            file (str):
+            file (str): absolute path to CSV file
 
         Returns:
             None:
@@ -109,24 +115,13 @@ class Utils:
             asteroids = [np.array(self.nonzero_submatrix(matrix[:, [*g]])) for k, g in
                          groupby(np.arange(len(mask)), lambda x: mask[x] != 0) if k]
 
-            observatory = Observatory.objects.filter(id=observatory_code)
-            if not observatory.exists():
-                observatory = Observatory.objects.create(id=observatory_code)
-            else:
-                observatory = observatory.get()
-
+            observatory, created = Observatory.objects.get_or_create(id=observatory_code)
             device, created = Device.objects.get_or_create(id=device_code, defaults={'device_resolution':device_resolution, "observatory":observatory})
 
             for ast in asteroids:
                 ast = ast.tolist()
                 asteroid, created = Asteroid.objects.get_or_create(body=ast)
-
-                if asteroid.exists():
-                    asteroid = asteroid.get()
-                    continue
-                asteroid = Asteroid(body=ast)
-                asteroid.save()
-                Sighting.objects.get_or_create(date=date, time=time, matrix=plain_matrix, device=device,
+                Sighting.objects.create(date=date, time=time, matrix=plain_matrix, device=device,
                                                observatory=observatory, asteroid=asteroid)
         path = pathlib.Path(file)
         (path.replace if path.exists() else path.rename)(os.path.join(settings.BASE_DIR, 'sightings', 'registered', os.path.basename(file)))
