@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 
 class AsteroidConfig(AppConfig):
-    name = 'asteroid'
+    name = 'apps.asteroid'
     _runned = False
 
     def ready(self):
@@ -11,5 +11,5 @@ class AsteroidConfig(AppConfig):
             self._run()
 
     def _run(self):
-        from asteroid.utils import Utils
-        Utils()
+        from apps.asteroid.utils import Utils
+        Utils().run()

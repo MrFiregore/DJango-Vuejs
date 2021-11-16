@@ -36,12 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'asteroid',
+    'apps.asteroid',
 ]
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-# REST_FRAMEWORK = {
-#     'EXCEPTION_HANDLER': 'asteroid.views.custom_exception_handler'
-# }
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'apps.asteroid.views.custom_exception_handler'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

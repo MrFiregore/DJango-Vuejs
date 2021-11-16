@@ -1,8 +1,7 @@
 import json
 
 from django.shortcuts import render
-from rest_framework.exceptions import PermissionDenied
-from django.http import HttpResponseNotFound, HttpResponse
+from django.http import HttpResponse
 from rest_framework.views import exception_handler
 
 
@@ -21,7 +20,7 @@ def custom_exception_handler(exc, context):
 # Create your views here.
 from rest_framework import status
 
-from asteroid.CustomResponse import CustomResponse
+from apps.asteroid.CustomResponse import CustomResponse
 
 
 def index(request):

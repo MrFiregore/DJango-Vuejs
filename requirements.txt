@@ -1,5 +1,7 @@
-numpy~=1.19.5
+numpy
 Django~=3.2.9
 djangorestframework==3.12.4
 watchdog==2.1.6
 whitenoise
+pytest
+pytest-django

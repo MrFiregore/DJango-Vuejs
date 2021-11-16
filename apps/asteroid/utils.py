@@ -8,14 +8,15 @@ import numpy as np
 from watchdog.observers import Observer
 from .CsvHandler import CsvHandler
 from .models import Asteroid, Observatory, Device, Sighting
+from django.conf import settings
 
 
 class Utils:
     event_list_flag = 0
 
     def __init__(self):
-        self.__src_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'avistamientos')
-        self.watcher_thread = threading.Thread(name="Hilo", target=self.run_daemon, daemon=True)
+        self.__src_path = os.path.join(settings.BASE_DIR, 'sightings')
+        self.watcher_thread = threading.Thread(target=self.run_daemon, daemon=True)
 
     def run(self):
         try:
@@ -41,12 +42,11 @@ class Utils:
                     self.event_list_flag = 1
                     while not event_handler.event_q.empty():
                         event, ts = event_handler.event_q.get()
-                        self.run_avistamientos(event.src_path)
+                        self.run_sightings(event.src_path)
                     self.event_list_flag = 0
                 time.sleep(1)
         except (KeyboardInterrupt, OSError):
             event_observer.stop()
-            event_handler.stop()
         event_observer.join()
 
     @staticmethod
@@ -86,7 +86,15 @@ class Utils:
             f.close()
         return dict_list
 
-    def run_avistamientos(self, file):
+    def run_sightings(self, file):
+        """
+
+        Args:
+            file (str):
+
+        Returns:
+            None:
+        """
         for i in self.csv_dict_list(file):
             date = i.get('date')
             time = i.get('time')
@@ -107,29 +115,18 @@ class Utils:
             else:
                 observatory = observatory.get()
 
-            device = Device.objects.filter(id=device_code)
-            if not device.exists():
-                device = Device.objects.create(id=device_code, device_resolution=device_resolution,
-                                               observatory=observatory)
-            else:
-                device = device.get()
+            device, created = Device.objects.get_or_create(id=device_code, defaults={'device_resolution':device_resolution, "observatory":observatory})
 
             for ast in asteroids:
                 ast = ast.tolist()
-                asteroid = Asteroid.objects.filter(body=ast)
+                asteroid, created = Asteroid.objects.get_or_create(body=ast)
+
                 if asteroid.exists():
                     asteroid = asteroid.get()
                     continue
                 asteroid = Asteroid(body=ast)
                 asteroid.save()
-                break
-
-            if not Sighting.objects.filter(date=date, time=time, matrix=plain_matrix, device=device,
-                                           observatory=observatory, asteroid=asteroid).exists():
-                Sighting.objects.create(date=date, time=time, matrix=plain_matrix, device=device,
-                                        observatory=observatory, asteroid=asteroid)
+                Sighting.objects.get_or_create(date=date, time=time, matrix=plain_matrix, device=device,
+                                               observatory=observatory, asteroid=asteroid)
         path = pathlib.Path(file)
-        if not path.exists():
-            path.rename(os.path.join(os.path.dirname(file), 'registered', os.path.basename(file)))
-        else:
-            path.replace(os.path.join(os.path.dirname(file), 'registered', os.path.basename(file)))
+        (path.replace if path.exists() else path.rename)(os.path.join(settings.BASE_DIR, 'sightings', 'registered', os.path.basename(file)))

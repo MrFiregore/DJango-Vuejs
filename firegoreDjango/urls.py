@@ -17,19 +17,16 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
-from asteroid.views import index
-from django.conf import settings
-from django.conf.urls.static import static
-import django.views.static
+from apps.asteroid.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^api/', include('asteroid.urls')),
+    url(r'^api/', include('apps.asteroid.urls')),
     path('', index, name='index'),
     url(r'^((?!(api|admin)).)*$', RedirectView.as_view(url='/', permanent=False), name='index_')
 ]
 
-handler403 = 'asteroid.views.error_400s'
-handler400 = 'asteroid.views.error_400s'
-handler404 = 'asteroid.views.error_400s'
-handler500 = 'asteroid.views.error_400s'
+handler403 = 'apps.asteroid.views.error_400s'
+handler400 = 'apps.asteroid.views.error_400s'
+handler404 = 'apps.asteroid.views.error_400s'
+handler500 = 'apps.asteroid.views.error_400s'
